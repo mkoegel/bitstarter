@@ -40,12 +40,12 @@ var assertFileExists = function(infile) {
 
 var assertURLExists = function(inurl) {
     var instr = inurl.toString();
-    restler.get(instr).on('complete', function(result) {
-        if (result instanceof Error) {
-					sys.puts("%s does not exist. Exiting.", instr);
-					process.exit(1); // http://nodejs.org/api/process.html#process_process_exit_code
-				}
-    });
+//     restler.get(instr).on('complete', function(result) {
+//         if (result instanceof Error) {
+// 					sys.puts("%s does not exist. Exiting.", instr);
+// 					process.exit(1); // http://nodejs.org/api/process.html#process_process_exit_code
+// 				}
+//     });
     return instr;
 };
 
@@ -70,19 +70,23 @@ var checkHtmlFile = function(htmlfile, checksfile) {
 };
 
 var checkURL = function(url, checksfile) {
- 	fs.writeFileSync(__dirname + '/tmp.html', '');
   restler.get(url)
     .on('complete', function(result) {
         if (result instanceof Error) {
           console.error('Error: ' + result.message);
         } else {
-          fs.writeFile(__dirname + '/tmp.html', result);
+//          console.log(result);
+					$ = cheerio.load(result);
+					var checks = loadChecks(checksfile).sort();
+					var out = {};
+					for(var ii in checks) {
+							var present = $(checks[ii]).length > 0;
+							out[checks[ii]] = present;
+					}
+			     var outJson = JSON.stringify(out, null, 4);
+    			console.log(outJson);
         }
     });
-    for (i=0; i < 1000000000; i++){};
-    var checkJson = checkHtmlFile(__dirname + '/tmp.html', checksfile);
-    fs.unlinkSync(__dirname + '/tmp.html');
-    return checkJson;
 };
 
 var clone = function(fn) {
@@ -102,9 +106,9 @@ if(require.main == module) {
        checkJson = checkURL(program.url, program.checks);
 		}else{
 		   checkJson = checkHtmlFile(program.file, program.checks);
+	     var outJson = JSON.stringify(checkJson, null, 4);
+  	   console.log(outJson);
     }
-     var outJson = JSON.stringify(checkJson, null, 4);
-    console.log(outJson);
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
