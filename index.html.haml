@@ -1,0 +1,55 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:charset => "utf-8"}/
+    %title My First Bitstarter
+    %link{:href => "https://d396qusza40orc.cloudfront.net/startup%2Fcode%2Fbootstrap-2.3.2.css", :rel => "stylesheet", :type => "text/css"}/
+    :css
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+      .container {
+        width: 960px;
+      }
+      p.lead {
+        padding-top: 15px;
+      }
+      .navigation, .pitch, .section1, .section2, .faq, .footer {
+        padding: 10px 0px 10px 0px;
+      }
+      .video, .thermometer, .order, .social {
+        border: 1px dotted;
+        test-align: center;
+      }
+      .video {
+        height: 124px;
+        line-height: 40px;
+      }
+      div.row {
+        border: 1px solid;
+      }
+  %body
+    .container
+      .row.navigation
+        .span2.logo Logo
+        .span6.blank Blank
+        .span4.about About
+      .row.heading
+        .span12
+          %p.lead This is my first bitstarter project.
+      .row.pitch
+        .span6.video Video
+        .span6
+          .thermometer Thermometer
+          .order Order
+          .social Social
+      .row.section1
+        .span12 Marketing Section 1
+        .span12 Marketing Section 2
+      .row.faq
+        .span12 FAQ
+      .row.footer
+        .span12 Footer
+    
+  
